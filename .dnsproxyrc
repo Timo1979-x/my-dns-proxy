@@ -1,0 +1,20 @@
+{
+  "port": 10053,
+  "telnetServerAddresses": [],
+  "listenAddresses": [],
+  "host": "127.0.0.1",
+  "logging": "dnsproxy:query,dnsproxy:info,dnsproxy:debug",
+  "nameservers": [
+    "1.2.3.4",
+    "1.0.0.1"
+  ],
+  "servers": {},
+  "domains": {
+    "xdev": "127.0.0.1"
+  },
+  "hosts": {
+    "devlocal": "127.0.0.2"
+  },
+  "fallback_timeout": 350,
+  "reload_config": true
+}

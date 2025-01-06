@@ -1,0 +1,27 @@
+{
+  "name": "my-dns-proxy",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "routes": "node ./src/test/routes.mjs",
+    "telnet": "node ./src/test/telnet.mjs",
+    "test:standard": "standard *.js",
+    "pkg": "pkg --out-dir release --targets node12-macos-x64,node12-alpine-x64,node12-linux-x64,node12-win dns-proxy.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "debug": "^4.4.0",
+    "iproute": "^2.3.0",
+    "native-dns-packet": "^0.1.1",
+    "rc": "^1.2.8",
+    "telnetlib": "^1.0.2",
+    "wildcard2": "^0.0.2"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1",
+    "standard": "^17.1.2"
+  }
+}
