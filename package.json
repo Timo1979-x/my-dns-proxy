@@ -3,24 +3,33 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "start": "node ./src/index.js",
-    "routes": "node ./src/test/routes.mjs",
-    "telnet": "node ./src/test/telnet.mjs",
+    "start": "node ./src/dns-proxy.mjs",
+    "debug": "DEBUG=1 node ./src/dns-proxy.mjs",
+    "routes": "DEBUG=1 node ./src/test/routes.mjs",
+    "telnet": "DEBUG=1 node ./src/test/telnet.mjs",
+    "doh": "DEBUG=1 node ./src/test/doh.mjs",
+    "dns": "DEBUG=1 node ./src/test/dns-proxy.mjs",
+    "logger": "DEBUG=1 node ./src/logger.mjs",
     "test:standard": "standard *.js",
-    "pkg": "pkg --out-dir release --targets node12-macos-x64,node12-alpine-x64,node12-linux-x64,node12-win dns-proxy.js"
+    "pkg": "pkg --out-dir release --targets node20-macos-x64,node20-alpine-x64,node20-linux-x64,node20-win dns-proxy.mjs"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "axios": "^1.7.9",
     "debug": "^4.4.0",
+    "dns-over-http-resolver": "^3.0.3",
     "iproute": "^2.3.0",
+    "lodash": "^4.17.21",
     "native-dns-packet": "^0.1.1",
     "rc": "^1.2.8",
+    "tangerine": "^1.6.0",
     "telnetlib": "^1.0.2",
     "wildcard2": "^0.0.2"
   },
   "devDependencies": {
+    "eslint": "^8.57.1",
     "pkg": "^5.8.1",
     "standard": "^17.1.2"
   }
