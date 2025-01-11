@@ -48,3 +48,19 @@ export const CODE_TO_RR_TYPE = Object.freeze({
 export const RR_TYPES = Object.freeze(
   Object.fromEntries(Object.keys(CODE_TO_RR_TYPE).map((key) => [CODE_TO_RR_TYPE[key], Number(key)]))
 )
+
+
+export function reflection(obj) {
+  let originalObj = obj
+  let result = ''
+  let indent = ''
+  while (obj) {
+    for (let prop of Reflect.ownKeys(obj)) {
+      let type = typeof originalObj[prop]
+      result += (indent + String(prop) + ' (' + type + ')\n')
+    }
+    obj = Object.getPrototypeOf(obj)
+    indent += '  '
+  }
+  return result
+}

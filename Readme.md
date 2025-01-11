@@ -20,6 +20,7 @@ initially, router configured to route all traffic through regular ISP connection
 - [native-dns-packet](https://github.com/tjfontaine/native-dns-packet)
 - [tangerine](https://www.npmjs.com/package/tangerine)
 - [rfc8484](https://datatracker.ietf.org/doc/html/rfc8484)
+- [buffers in JS](https://www.codeguage.com/courses/advanced-js/buffers-basics)
 
 ## TODO
 The work is at the very beginning, so many things to be done:
@@ -30,7 +31,7 @@ The work is at the very beginning, so many things to be done:
 - [ ] manage linux routes on DNS requests for 'VPN resources'
 - [ ] manage wireguard network interface on DNS requests for 'VPN resources'
 
-### DNS record types
+## DNS record types
 | Name | id | RFC | description | function |
 |------|----|-----|-------------|----------|
 | A | 1 | RFC 1035[1] | Address record | Returns a 32-bit IPv4 address, most commonly used to map hostnames to an IP address of the host, but it is also used for DNSBLs, storing subnet masks in RFC 1101, etc. |
@@ -81,7 +82,48 @@ The work is at the very beginning, so many things to be done:
 | TA | 32768 | — | DNSSEC Trust Authorities | Part of a deployment proposal for DNSSEC without a signed DNS root. See the IANA database and Weiler Spec for details. Uses the same format as the DS record. |
 | DLV | 32769 | RFC 4431 | DNSSEC Lookaside Validation record | For publishing DNSSEC trust anchors outside of the DNS delegation chain. Uses the same format as the DS record. RFC 5074 describes a way of using these records.  |
 
-### DNS check commands
+## iptables
+Если в конфигурации wireguard оставить allowedIP = 0.0.0.0, то при поднятии интерфейса wg0 создаются следующие правила файрвола:
+```
+> nft list ruleset
+
+table ip6 wg-quick-wg0 {
+        chain preraw {
+                type filter hook prerouting priority raw; policy accept;
+                iifname != "wg0" ip6 daddr fd00:0:1:12:10:134:235:121 fib saddr type != local drop
+        }
+
+        chain premangle {
+                type filter hook prerouting priority mangle; policy accept;
+                meta l4proto udp meta mark set ct mark
+        }
+
+        chain postmangle {
+                type filter hook postrouting priority mangle; policy accept;
+                meta l4proto udp meta mark 0x0000ca6c ct mark set meta mark
+        }
+}
+table ip wg-quick-wg0 {
+        chain preraw {
+                type filter hook prerouting priority raw; policy accept;
+                iifname != "wg0" ip daddr 10.134.235.121 fib saddr type != local drop
+        }
+
+        chain premangle {
+                type filter hook prerouting priority mangle; policy accept;
+                meta l4proto udp meta mark set ct mark
+        }
+
+        chain postmangle {
+                type filter hook postrouting priority mangle; policy accept;
+                meta l4proto udp meta mark 0x0000ca6c ct mark set meta mark
+        }
+}
+```
+Поэтому надо либо переписать создание интерфейса, либо вписать в конфиг `AllowedIps=<какой-нибудь-ненужный-IP>/32`.
+
+
+## DNS check commands
 ```bash
 # Эта команда пойдёт напрямую, без явного использования DoH:
 dig rt.pornhub.com # 82.209.230.73 Адрес заглушки белтелекома
@@ -93,7 +135,7 @@ kdig -d @8.8.8.8 +tls-ca +tls-host=dns.google.com rt.pornhub.com # 66.254.114.41
 dig @cloudflare-dns.com +https rt.pornhub.com
 curl -H 'accept: application/dns-json' 'https://cloudflare-dns.com/dns-query?name=rt.pornhub.com&type=A' | jq .
 ````
-### Список публичных DoH/DoT серверов
+## Список публичных DoH/DoT серверов
 - https://github.com/curl/curl/wiki/DNS-over-HTTPS
 - [DNSCrypt.info: Interactive list of public DNS servers](https://dnscrypt.info/public-servers/)
 
