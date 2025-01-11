@@ -5,7 +5,7 @@ import { logdebug, logerror, loginfo, logquery } from './logger.mjs'
 import axios from 'axios'
 import { getType, toHexString, CODE_TO_RR_TYPE } from './utils.mjs'
 import './telnet.mjs'
-
+import { addToCache, getFromCache } from './cache.mjs'
 const dohUrl = 'https://cloudflare-dns.com/dns-query'
 const axiosOptions = { headers: { 'Content-Type': 'application/dns-message' }, responseType: 'arraybuffer' }
 
@@ -19,8 +19,8 @@ const errorHandler = (err) => logerror(err)
 const createListeningHandler = (host, port) => () => loginfo('dns: listening on %s:%s', host, port)
 
 function createMessageHandler(server) {
-  return (message, rInfo) => {
-    let queryParsed = packet.parse(message)
+  return (query, rInfo) => {
+    let queryParsed = packet.parse(query)
     logquery(
       '%s query for %s from %s:%s',
       CODE_TO_RR_TYPE[queryParsed.question[0].type],
@@ -28,15 +28,23 @@ function createMessageHandler(server) {
       rInfo.address,
       rInfo.port
     )
+    logdebug('parsed query %s', JSON.stringify(queryParsed, null, 2))
+    let answer = getFromCache(query, queryParsed)
+    if (answer) {
+      logdebug('serving from cache')
+      server.send(answer, rInfo.port, rInfo.address)
+      return
+    }
     
     axios
-      .post(dohUrl, message, axiosOptions)
-      .then((response) => {
-        let answer = response.data
+      .post(dohUrl, query, axiosOptions)
+      .then((answer) => {
+        answer = answer.data
         logdebug('answer is %s of type %s', toHexString(answer), getType(answer))
         server.send(answer, rInfo.port, rInfo.address)
         let answerParsed = packet.parse(answer)
         logdebug('parsed answer is %s', JSON.stringify(answerParsed, null, 2))
+        addToCache(answer, answerParsed)
       })
       .catch((err) => {
         logerror('ERROR: %j', err)

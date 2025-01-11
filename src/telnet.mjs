@@ -2,6 +2,20 @@ import telnetlib from 'telnetlib'
 import cache, { purgeCache } from './cache.mjs'
 import config from './config.mjs'
 import { loginfo } from './logger.mjs'
+import cloneDeep from 'lodash/cloneDeep.js'
+import packet from 'native-dns-packet'
+import { CODE_TO_RR_TYPE } from './utils.mjs'
+
+function describePayload(payload) {
+  payload = packet.parse(payload)
+  return {
+    id: payload.header.id,
+    question: payload.question.map(q => ({
+      ...q, type: CODE_TO_RR_TYPE[q.type]
+    })),
+    answer: payload.answer
+  }
+}
 
 const COMMANDS = Object.freeze(
   [
@@ -25,7 +39,32 @@ const COMMANDS = Object.freeze(
       name: ['cache', 'ca'],
       description: 'dump dns cache',
       action(connection, data) {
-        connection.write(JSON.stringify(cache, null, 2) + '\n')
+        let $cache = cloneDeep(cache)
+        for (let rrType of Object.keys($cache)) {
+          let c = $cache[rrType]
+          for (let name of Object.keys(c)) {
+            let record = c[name]
+            record.expires = new Date(record.expires).toLocaleString()
+            record.payload = describePayload(record.payload)
+          }
+        }
+        connection.write(JSON.stringify($cache, null, 2) + '\n')
+        return ''
+      },
+    },
+    {
+      name: ['routes', 'ro'],
+      description: 'show routes',
+      action(connection, data) {
+        connection.write('not implemented\n')
+        return ''
+      },
+    },
+    {
+      name: ['wg'],
+      description: 'show wireguard iface config',
+      action(connection, data) {
+        connection.write('not implemented\n')
         return ''
       },
     },
@@ -90,7 +129,7 @@ let connHandler = (c) => {
     c.write(`unknown command ${command}\n`)
   })
 
-  c.on('close', () => console.log('telnet connection closed'))
+  // c.on('close', () => console.log('telnet connection closed'))
 }
 
 let addressList = config.telnetServerAddresses || []
