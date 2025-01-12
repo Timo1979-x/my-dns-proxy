@@ -1,0 +1,812 @@
+//  ip ro
+// default via 192.168.100.1 dev enp0s3 proto static
+// 10.1.1.1 dev wg0 scope link
+// 192.168.33.0/24 dev enp0s8 proto kernel scope link src 192.168.33.1
+// 192.168.100.0/24 dev enp0s3 proto kernel scope link src 192.168.100.107
+//  ip link
+// 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+//     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+// 2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+//     link/ether 08:00:27:91:e1:1f brd ff:ff:ff:ff:ff:ff
+// 3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+//     link/ether 08:00:27:c7:29:10 brd ff:ff:ff:ff:ff:ff
+// 4: wg0: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1420 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+//     link/none
+
+[
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 0,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 254,
+      "protocol": "STATIC",
+      "scope": "UNIVERSE",
+      "type": "UNICAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 254,
+      "gateway": {
+        "type": "Buffer",
+        "data": [192, 168, 100, 1]
+      },
+      "oif": 2
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 32,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 254,
+      "protocol": "BOOT",
+      "scope": "LINK",
+      "type": "UNICAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 254,
+      "dst": {
+        "type": "Buffer",
+        "data": [10, 1, 1, 1]
+      },
+      "oif": 4
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 24,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 254,
+      "protocol": "KERNEL",
+      "scope": "LINK",
+      "type": "UNICAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 254,
+      "dst": {
+        "type": "Buffer",
+        "data": [192, 168, 33, 0]
+      },
+      "prefsrc": {
+        "type": "Buffer",
+        "data": [192, 168, 33, 1]
+      },
+      "oif": 3
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 24,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 254,
+      "protocol": "KERNEL",
+      "scope": "LINK",
+      "type": "UNICAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 254,
+      "dst": {
+        "type": "Buffer",
+        "data": [192, 168, 100, 0]
+      },
+      "prefsrc": {
+        "type": "Buffer",
+        "data": [192, 168, 100, 107]
+      },
+      "oif": 2
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 32,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "HOST",
+      "type": "LOCAL",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [10, 134, 235, 121]
+      },
+      "prefsrc": {
+        "type": "Buffer",
+        "data": [10, 134, 235, 121]
+      },
+      "oif": 4
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 8,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "HOST",
+      "type": "LOCAL",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [127, 0, 0, 0]
+      },
+      "prefsrc": {
+        "type": "Buffer",
+        "data": [127, 0, 0, 1]
+      },
+      "oif": 1
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 32,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "HOST",
+      "type": "LOCAL",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [127, 0, 0, 1]
+      },
+      "prefsrc": {
+        "type": "Buffer",
+        "data": [127, 0, 0, 1]
+      },
+      "oif": 1
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 32,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "LINK",
+      "type": "BROADCAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [127, 255, 255, 255]
+      },
+      "prefsrc": {
+        "type": "Buffer",
+        "data": [127, 0, 0, 1]
+      },
+      "oif": 1
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 32,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "HOST",
+      "type": "LOCAL",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [192, 168, 33, 1]
+      },
+      "prefsrc": {
+        "type": "Buffer",
+        "data": [192, 168, 33, 1]
+      },
+      "oif": 3
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 32,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "LINK",
+      "type": "BROADCAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [192, 168, 33, 255]
+      },
+      "prefsrc": {
+        "type": "Buffer",
+        "data": [192, 168, 33, 1]
+      },
+      "oif": 3
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 32,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "HOST",
+      "type": "LOCAL",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [192, 168, 100, 107]
+      },
+      "prefsrc": {
+        "type": "Buffer",
+        "data": [192, 168, 100, 107]
+      },
+      "oif": 2
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 2,
+      "dstLen": 32,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "LINK",
+      "type": "BROADCAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [192, 168, 100, 255]
+      },
+      "prefsrc": {
+        "type": "Buffer",
+        "data": [192, 168, 100, 107]
+      },
+      "oif": 2
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 128,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 254,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "UNICAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 254,
+      "dst": {
+        "type": "Buffer",
+        "data": [253, 0, 0, 0, 0, 1, 0, 18, 0, 16, 1, 52, 2, 53, 1, 33]
+      },
+      "priority": 256,
+      "oif": 4,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 64,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 254,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "UNICAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 254,
+      "dst": {
+        "type": "Buffer",
+        "data": [254, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "priority": 256,
+      "oif": 2,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 64,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 254,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "UNICAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 254,
+      "dst": {
+        "type": "Buffer",
+        "data": [254, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "priority": 256,
+      "oif": 3,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 0,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 254,
+      "protocol": "RA",
+      "scope": "UNIVERSE",
+      "type": "UNICAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 254,
+      "metrics": {
+        "mtu": {
+          "type": "Buffer",
+          "data": [220, 5, 0, 0]
+        },
+        "hoplimit": {
+          "type": "Buffer",
+          "data": [255, 0, 0, 0]
+        }
+      },
+      "priority": 1024,
+      "gateway": {
+        "type": "Buffer",
+        "data": [254, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+      },
+      "oif": 2,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 169416,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 128,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "LOCAL",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+      },
+      "priority": 0,
+      "oif": 1,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 128,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "LOCAL",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [253, 0, 0, 0, 0, 1, 0, 18, 0, 16, 1, 52, 2, 53, 1, 33]
+      },
+      "priority": 0,
+      "oif": 4,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 128,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "ANYCAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [254, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "priority": 0,
+      "oif": 2,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 128,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "ANYCAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [254, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "priority": 0,
+      "oif": 3,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 128,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "LOCAL",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [254, 128, 0, 0, 0, 0, 0, 0, 10, 0, 39, 255, 254, 145, 225, 31]
+      },
+      "priority": 0,
+      "oif": 2,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 128,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "LOCAL",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [254, 128, 0, 0, 0, 0, 0, 0, 10, 0, 39, 255, 254, 199, 41, 16]
+      },
+      "priority": 0,
+      "oif": 3,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 8,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "MULTICAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "priority": 256,
+      "oif": 2,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 8,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "MULTICAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "priority": 256,
+      "oif": 3,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  },
+  {
+    "kind": "route",
+    "data": {
+      "family": 10,
+      "dstLen": 8,
+      "srcLen": 0,
+      "tos": 0,
+      "table": 255,
+      "protocol": "KERNEL",
+      "scope": "UNIVERSE",
+      "type": "MULTICAST",
+      "flags": {}
+    },
+    "attrs": {
+      "table": 255,
+      "dst": {
+        "type": "Buffer",
+        "data": [255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "priority": 256,
+      "oif": 4,
+      "cacheInfo": {
+        "clntref": 0,
+        "lastuse": 0,
+        "expires": 0,
+        "error": 0,
+        "used": 0,
+        "id": 0,
+        "ts": 0,
+        "tsage": 0
+      },
+      "pref": {
+        "type": "Buffer",
+        "data": [0]
+      }
+    }
+  }
+]

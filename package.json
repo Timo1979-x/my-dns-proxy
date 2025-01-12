@@ -7,6 +7,7 @@
     "debug": "DEBUG=1 node ./src/dns-proxy.mjs",
     "routes": "DEBUG=1 node ./src/test/routes.mjs",
     "nl": "DEBUG=1 node ./src/test/netlink.mjs",
+    "ip": "DEBUG=1 node ./src/test/ip.mjs",
     "telnet": "DEBUG=1 node ./src/test/telnet.mjs",
     "doh": "DEBUG=1 node ./src/test/doh.mjs",
     "dns": "DEBUG=1 node ./src/test/dns-proxy.mjs",

@@ -102,7 +102,7 @@ function createMessageHandler(server) {
 for (let address of addressList) {
   let parts = address.split(':')
   let host = parts[0]
-  let port = parts[1] || 10024
+  let port = parts[1] || 10053
   const server = dgram.createSocket('udp4')
 
   server.on('listening', createListeningHandler(host, port))

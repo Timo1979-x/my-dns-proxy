@@ -122,6 +122,16 @@ table ip wg-quick-wg0 {
 ```
 Поэтому надо либо переписать создание интерфейса, либо вписать в конфиг `AllowedIps=<какой-нибудь-ненужный-IP>/32`.
 
+### Что происходит при поднятии wg
+#### AllowedIps=<список отдельных хостов>
+```
+[#] ip link add wg0 type wireguard
+[#] wg setconf wg0 /dev/fd/63
+[#] ip -4 address add 10.134.235.121/32 dev wg0
+[#] ip -6 address add fd00:0:1:12:10:134:235:121/128 dev wg0
+[#] ip link set mtu 1420 up dev wg0
+[#] ip -4 route add 10.1.1.1/32 dev wg0
+```
 
 ## DNS check commands
 ```bash

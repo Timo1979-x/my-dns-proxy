@@ -1,6 +1,6 @@
 host = vpn
 dnsPort = 10053
-telnetPort = 10054
+telnetPort = 10023
 
 telnet:
 	telnet $(host) ${telnetPort}

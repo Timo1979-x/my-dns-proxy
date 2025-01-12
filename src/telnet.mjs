@@ -5,6 +5,7 @@ import { loginfo } from './logger.mjs'
 import cloneDeep from 'lodash/cloneDeep.js'
 import packet from 'native-dns-packet'
 import { CODE_TO_RR_TYPE } from './utils.mjs'
+import { execSync } from 'child_process'
 
 function describePayload(payload) {
   payload = packet.parse(payload)
@@ -56,7 +57,12 @@ const COMMANDS = Object.freeze(
       name: ['routes', 'ro'],
       description: 'show routes',
       action(connection, data) {
-        connection.write('not implemented\n')
+        try {
+          let result = execSync('ip route show')
+          connection.write('routes is:\n' + String(result) + '\n')
+        } catch (e) {
+          connection.write('get routes error:\n' + String(e.output[2]) + '\n')
+        }
         return ''
       },
     },
@@ -139,7 +145,7 @@ if (addressList.length == 0) {
   for (let telnetAddress of new Set(addressList)) {
     let parts = telnetAddress.split(':')
     let host = parts[0]
-    let port = parts[1] || 10024
+    let port = parts[1] || 10023
     const server = telnetlib.createServer({}, connHandler)
     server.listen(port, host)
     loginfo(`telnet: listening on ${host}:${port}`)

@@ -1,3 +1,5 @@
+import wcMatch from 'wildcard2'
+
 const hexDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
 
 export function toBase64(source) {
@@ -43,18 +45,21 @@ export const CODE_TO_RR_TYPE = Object.freeze({
 })
 
 /**
+ * коды DNS-записей, связанные с модификацией маршрутов
+ */
+export const ROUTABLE_RR_TYPES = Object.freeze([
+  1, // A
+  28, // AAAA
+])
+/**
  * List of numeric DNS request codes to cache
  */
-export const CACHEABLE_RR_CODES = Object.freeze(
-  Object.keys(CODE_TO_RR_TYPE).map(e => Number(e))
-)
+export const CACHEABLE_RR_CODES = Object.freeze(Object.keys(CODE_TO_RR_TYPE).map((e) => Number(e)))
 
 /**
  * List of symbolic DNS request types to cache
  */
-export const CACHEABLE_RR_TYPES = Object.freeze(
-  Object.keys(CODE_TO_RR_TYPE).map((e) => CODE_TO_RR_TYPE[e])
-)
+export const CACHEABLE_RR_TYPES = Object.freeze(Object.keys(CODE_TO_RR_TYPE).map((e) => CODE_TO_RR_TYPE[e]))
 
 /**
  * Correspondence between literal and numeric DNS request types. Here comes only types of records cached by us
@@ -68,10 +73,10 @@ export function reflection(obj) {
   let result = ''
   let indent = ''
   while (obj) {
-    result += (indent + getType(obj) + '\n')
+    result += indent + getType(obj) + '\n'
     for (let prop of Reflect.ownKeys(obj)) {
       let type = typeof originalObj[prop]
-      result += (indent + String(prop) + ' (' + type + ')\n')
+      result += indent + String(prop) + ' (' + type + ')\n'
     }
     obj = Object.getPrototypeOf(obj)
     indent += '  '
@@ -79,22 +84,16 @@ export function reflection(obj) {
   return result
 }
 
-export function buffer2Ip(buf) {
-  console.log(reflection(buf))
-  let result = ''
-  let view = new DataView(buf)
-  for (let i = 0; i < view.byteLength; i++) {
-    if (i != 0) result += '.'
-    result += Number(view.getUint8(i))
+/**
+ * test that input string matches any of patterns in the array.
+ * @param {String} string The input string
+ * @param {Array<String>} patterns list of patterns to match
+ * @returns the matched pattern, or null if no matches.
+ */
+export function matchAny(string, patterns) {
+  for (let pattern of patterns) {
+    if(pattern === '') continue
+    if (wcMatch(string, pattern)) return pattern
   }
-  return result
-}
-
-export function array2Ip(arr) {
-  let result = ''
-  for (let i = 0; i < arr.length; i++) {
-    if (i != 0) result += '.'
-    result += arr[i]
-  }
-  return result
+  return null
 }
